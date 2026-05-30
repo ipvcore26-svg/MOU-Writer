@@ -8,6 +8,7 @@ import LivePreview from '../components/LivePreview';
 import { FormFields, DEFAULT_VALUES, DOC_DEFAULTS } from '../types/fields';
 
 const STORAGE_KEY = 'ipv_term_sheet_draft';
+const STORAGE_VERSION = 'v2'; // bump to clear old cached defaults
 
 export default function Dashboard() {
   const [generating, setGenerating] = useState(false);
@@ -19,7 +20,11 @@ export default function Dashboard() {
   const savedValues = (() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : DEFAULT_VALUES;
+      if (!raw) return DEFAULT_VALUES;
+      const parsed = JSON.parse(raw);
+      // If stored data is from an old version, discard it
+      if (parsed.__version !== STORAGE_VERSION) return DEFAULT_VALUES;
+      return parsed;
     } catch { return DEFAULT_VALUES; }
   })();
 
@@ -32,7 +37,7 @@ export default function Dashboard() {
   // Autosave
   useEffect(() => {
     const id = setTimeout(() => {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(values));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...values, __version: STORAGE_VERSION }));
     }, 800);
     return () => clearTimeout(id);
   }, [values]);
