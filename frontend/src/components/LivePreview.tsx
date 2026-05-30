@@ -22,7 +22,8 @@ export default function LivePreview({ watch }: LivePreviewProps) {
     { title: 'IPV Ultra A', fields: ['field10','field11','field12','field13','field14'] as (keyof FormFields)[] },
     { title: 'IPV Ultra B', fields: ['field19','field20','field21','field22','field23'] as (keyof FormFields)[] },
     { title: 'Slabs & Fee', fields: ['field28','field29','field33','field38'] as (keyof FormFields)[] },
-    { title: 'Exclusivity & Validity', fields: ['field43','field44','field47','field48'] as (keyof FormFields)[] },
+    { title: 'Exclusivity & Permissions', fields: ['field43','field44','field49','field50'] as (keyof FormFields)[] },
+    { title: 'Validity & Signatory', fields: ['field47','field48'] as (keyof FormFields)[] },
   ];
 
   return (

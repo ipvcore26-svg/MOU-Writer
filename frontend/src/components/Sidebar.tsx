@@ -15,7 +15,7 @@ export default function Sidebar({ activeSection, onSectionClick, watch }: Sideba
     return { filled, total: fields.length };
   }
 
-  const totalFields = 48;
+  const totalFields = 50;
   const filledFields = Object.values(values).filter((v) => (v || '').trim() !== '').length;
   const progress = Math.round((filledFields / totalFields) * 100);
 
