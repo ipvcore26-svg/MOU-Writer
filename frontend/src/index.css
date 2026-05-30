@@ -4,48 +4,47 @@
 
 @layer base {
   body {
-    @apply bg-dark-900 text-gray-100 font-sans;
-    background-color: #0a0a0a;
+    @apply bg-surface-50 text-surface-900 font-sans;
   }
 
-  ::-webkit-scrollbar {
-    width: 6px;
-  }
-  ::-webkit-scrollbar-track {
-    background: #111111;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: #d4af37;
-    border-radius: 3px;
-  }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #e2e8f0; }
+  ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 3px; }
 }
 
 @layer components {
+  /* ── Inputs ── */
   .gold-input {
-    @apply w-full bg-dark-700 border border-dark-400 rounded-md px-3 py-2 text-sm text-gray-100
-           focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500
-           placeholder-gray-600 transition-colors duration-200;
+    @apply w-full bg-white border border-surface-200 rounded-md px-3 py-2 text-sm text-surface-800
+           focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100
+           placeholder-surface-400 transition-colors duration-200;
   }
 
+  /* ── Labels ── */
   .gold-label {
-    @apply block text-xs font-medium text-gold-500 uppercase tracking-wider mb-1;
+    @apply block text-xs font-semibold text-brand-700 uppercase tracking-wider mb-1;
   }
 
+  /* ── Section card ── */
   .section-card {
-    @apply bg-dark-800 border border-dark-500 rounded-lg p-6 mb-6;
+    @apply bg-white border border-surface-200 rounded-xl p-6 mb-6 shadow-sm;
   }
 
+  /* ── Section title ── */
   .section-title {
-    @apply font-serif text-gold-400 text-lg font-semibold mb-4 pb-2 border-b border-dark-500;
+    @apply font-serif text-brand-700 text-lg font-semibold mb-4 pb-2 border-b border-surface-200;
   }
 
+  /* ── Primary button ── */
   .btn-primary {
-    @apply bg-gold-500 hover:bg-gold-600 text-dark-900 font-semibold px-6 py-3 rounded-md
-           transition-all duration-200 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply bg-brand-600 hover:bg-brand-700 text-white font-semibold px-5 py-2.5 rounded-lg
+           transition-all duration-200 flex items-center gap-2
+           disabled:opacity-50 disabled:cursor-not-allowed shadow-sm;
   }
 
+  /* ── Secondary button ── */
   .btn-secondary {
-    @apply border border-gold-500 text-gold-500 hover:bg-gold-500 hover:text-dark-900 font-medium
-           px-4 py-2 rounded-md transition-all duration-200 text-sm;
+    @apply border border-brand-500 text-brand-600 hover:bg-brand-50 font-medium
+           px-4 py-2 rounded-lg transition-all duration-200 text-sm;
   }
 }
