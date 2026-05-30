@@ -162,11 +162,66 @@ export const SECTIONS = [
   },
 ];
 
-// Meaningful defaults so the PDF is never blank when user hasn't changed a field
 const today = new Date().toISOString().split('T')[0];
 const oneYearLater = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
 
+// Sections A, B, C, J start blank — user must fill these in
 export const DEFAULT_VALUES: FormFields = {
+  field1: '',   // A – Execution Date
+  field2: '',   // B – Consultant Entity Name
+  field3: '',   // B
+  field4: '',   // B
+  field5: '',   // B
+  field6: '',   // B
+  field7: '',   // B
+  field8: '',   // C – IPV Phone
+  field9: '',   // C – IPV Email
+  field10: '2%',
+  field11: '5',
+  field12: '20%',
+  field13: '8%',
+  field14: '1,00,00,000',
+  field15: '25,00,000',
+  field16: '25,00,000',
+  field17: '25,00,000',
+  field18: '25,00,000',
+  field19: '1.5%',
+  field20: '5',
+  field21: '15%',
+  field22: '8%',
+  field23: '50,00,000',
+  field24: '12,50,000',
+  field25: '12,50,000',
+  field26: '12,50,000',
+  field27: '12,50,000',
+  field28: '1',
+  field29: '2',
+  field30: '5',
+  field31: '10',
+  field32: '20',
+  field33: '1%',
+  field34: '1.25%',
+  field35: '1.5%',
+  field36: '1.75%',
+  field37: '2%',
+  field38: '1.5%',
+  field39: '1.75%',
+  field40: '2%',
+  field41: '2.25%',
+  field42: '2.5%',
+  field43: 'Pan India',
+  field44: oneYearLater,
+  field45: '50,00,000',
+  field46: '1,50,00,000',
+  field47: '',   // J – blank by default
+  field48: '',   // J – blank by default
+  field49: 'Not Allowed',
+  field50: 'Not Allowed',
+  field51: 'Allowed',
+};
+
+// Fallback values used only when generating the document (so no field is blank in the output)
+export const DOC_DEFAULTS: FormFields = {
   field1: today,
   field2: 'Consultant Entity Name',
   field3: 'LLP IN / CIN Number',

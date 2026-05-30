@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import Docxtemplater from 'docxtemplater';
+import PizZip from 'pizzip';
 import Sidebar from '../components/Sidebar';
 import FormSection from '../components/FormSection';
 import LivePreview from '../components/LivePreview';
-import { FormFields, DEFAULT_VALUES } from '../types/fields';
+import { FormFields, DEFAULT_VALUES, DOC_DEFAULTS } from '../types/fields';
 
 const STORAGE_KEY = 'ipv_term_sheet_draft';
 
@@ -61,19 +63,28 @@ export default function Dashboard() {
     setError('');
     setSuccess(false);
     try {
-      const res = await fetch('/api/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({ error: 'Unknown error' }));
-        throw new Error(err.error || `Server error ${res.status}`);
+      // Merge form data with doc defaults (for fields left blank)
+      const fields: Record<string, string> = {};
+      for (const key of Object.keys(DOC_DEFAULTS) as (keyof FormFields)[]) {
+        const val = data[key];
+        fields[key] = (val && val.trim() !== '') ? val : DOC_DEFAULTS[key];
       }
-      const blob = await res.blob();
-      const url  = URL.createObjectURL(blob);
-      const a    = document.createElement('a');
-      a.href     = url;
+
+      // Fetch the bundled template
+      const base = '/MOU-Writer/';
+      const templateRes = await fetch(`${base}template.docx`);
+      if (!templateRes.ok) throw new Error('Template file not found');
+      const templateBuf = await templateRes.arrayBuffer();
+
+      // Fill template client-side
+      const zip = new PizZip(templateBuf);
+      const doc = new Docxtemplater(zip, { paragraphLoop: true, linebreaks: true });
+      doc.render(fields);
+      const out = doc.getZip().generate({ type: 'blob', mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+
+      const url = URL.createObjectURL(out);
+      const a   = document.createElement('a');
+      a.href    = url;
       a.download = `IPV_Ultra_Term_Sheet_${data.field2 || 'Broker'}_${new Date().toISOString().split('T')[0]}.docx`;
       document.body.appendChild(a);
       a.click();
