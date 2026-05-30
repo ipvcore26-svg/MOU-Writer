@@ -31,28 +31,28 @@ function AllowedToggle({ value, onChange }: ToggleProps) {
   const isAllowed = value === 'Allowed';
 
   return (
-    <div className="flex mt-1 rounded-md overflow-hidden border border-dark-500">
+    <div className="flex mt-1 rounded-md overflow-hidden border border-surface-200">
       <button
         type="button"
         onClick={() => onChange('Allowed')}
         className={[
           'flex-1 py-2.5 text-sm font-semibold transition-all duration-200',
           isAllowed
-            ? 'bg-emerald-700 text-emerald-100 shadow-inner'
-            : 'bg-dark-700 text-gray-500 hover:bg-dark-600 hover:text-gray-300',
+            ? 'bg-emerald-600 text-white shadow-inner'
+            : 'bg-white text-surface-400 hover:bg-surface-50 hover:text-surface-600',
         ].join(' ')}
       >
         ✓ Allowed
       </button>
-      <div className="w-px bg-dark-500" />
+      <div className="w-px bg-surface-200" />
       <button
         type="button"
         onClick={() => onChange('Not Allowed')}
         className={[
           'flex-1 py-2.5 text-sm font-semibold transition-all duration-200',
           !isAllowed
-            ? 'bg-red-900 text-red-200 shadow-inner'
-            : 'bg-dark-700 text-gray-500 hover:bg-dark-600 hover:text-gray-300',
+            ? 'bg-red-600 text-white shadow-inner'
+            : 'bg-white text-surface-400 hover:bg-surface-50 hover:text-surface-600',
         ].join(' ')}
       >
         ✗ Not Allowed
@@ -83,9 +83,9 @@ export default function FormSection({ register, watch, setValue, errors: _errors
               return (
                 <div key={field} className={isTextarea ? 'md:col-span-2' : ''}>
                   <label className="gold-label" htmlFor={field}>
-                    <span className="text-gray-600 mr-1">{field.replace('field', '#')}</span>
+                    <span className="text-surface-400 mr-1">{field.replace('field', '#')}</span>
                     {label}
-                    {hasValue && <span className="ml-1 text-gold-500">✓</span>}
+                    {hasValue && <span className="ml-1 text-brand-500">✓</span>}
                   </label>
 
                   {isToggle ? (
