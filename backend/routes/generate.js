@@ -1,16 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const { generateDocument } = require('../services/docxService');
-const { generatePDF } = require('../services/pdfService');
+const { generatePDF, DEFAULTS } = require('../services/pdfService');
 
-// Normalise incoming fields — fill missing ones with empty string
+// Apply defaults for any field that is missing or empty
 function normaliseFields(body) {
-  const fields = { ...body };
-  for (let i = 1; i <= 50; i++) {
-    const key = `field${i}`;
-    if (fields[key] === undefined || fields[key] === null) {
-      fields[key] = '';
-    }
+  const fields = {};
+  for (const key of Object.keys(DEFAULTS)) {
+    const val = body[key];
+    fields[key] = (val !== undefined && val !== null && String(val).trim() !== '')
+      ? String(val)
+      : DEFAULTS[key];
   }
   return fields;
 }

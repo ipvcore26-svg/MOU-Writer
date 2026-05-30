@@ -49,6 +49,7 @@ export interface FormFields {
   field48: string;  // Consultant Signatory Name
   field49: string;  // Sub-Referral Rights (toggle: Allowed / Not Allowed)
   field50: string;  // Assignment of Agreement (toggle: Allowed / Not Allowed)
+  field51: string;  // Sub-Broking Appointment (toggle: Allowed / Not Allowed)
 }
 
 export const FIELD_LABELS: Record<keyof FormFields, string> = {
@@ -102,10 +103,11 @@ export const FIELD_LABELS: Record<keyof FormFields, string> = {
   field48: 'Consultant Signatory Name',
   field49: 'Sub-Referral Rights',
   field50: 'Assignment of Agreement',
+  field51: 'Sub-Broking Appointment',
 };
 
 // Fields that render as Allowed / Not Allowed toggle
-export const TOGGLE_FIELDS: (keyof FormFields)[] = ['field49', 'field50'];
+export const TOGGLE_FIELDS: (keyof FormFields)[] = ['field49', 'field50', 'field51'];
 
 export const SECTIONS = [
   {
@@ -151,7 +153,7 @@ export const SECTIONS = [
   {
     id: 'exclusivity',
     label: 'I. Exclusivity & Permissions',
-    fields: ['field43', 'field44', 'field45', 'field46', 'field49', 'field50'] as (keyof FormFields)[],
+    fields: ['field43', 'field44', 'field45', 'field46', 'field49', 'field50', 'field51'] as (keyof FormFields)[],
   },
   {
     id: 'validity',
@@ -215,4 +217,5 @@ export const DEFAULT_VALUES: FormFields = {
   field48: 'Authorised Signatory Name',
   field49: 'Not Allowed',
   field50: 'Not Allowed',
+  field51: 'Allowed',
 };
