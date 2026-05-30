@@ -8,9 +8,6 @@ import { FormFields, DEFAULT_VALUES } from '../types/fields';
 const STORAGE_KEY = 'ipv_term_sheet_draft';
 
 export default function Dashboard() {
-  const [generating, setGenerating] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
   const [activeSection, setActiveSection] = useState('execution');
   const mainRef = useRef<HTMLDivElement>(null);
 
@@ -23,7 +20,7 @@ export default function Dashboard() {
     }
   })();
 
-  const { register, handleSubmit, watch, reset, setValue, formState: { errors } } = useForm<FormFields>({
+  const { register, watch, reset, setValue } = useForm<FormFields>({
     defaultValues: savedValues,
   });
 
@@ -65,40 +62,6 @@ export default function Dashboard() {
     el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  async function onSubmit(data: FormFields) {
-    setGenerating(true);
-    setError('');
-    setSuccess(false);
-
-    try {
-      const res = await fetch('/api/generate/pdf', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({ error: 'Unknown error' }));
-        throw new Error(err.error || `Server error ${res.status}`);
-      }
-
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `IPV_Ultra_Term_Sheet_${data.field2 || 'Broker'}_${new Date().toISOString().split('T')[0]}.pdf`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-      setSuccess(true);
-    } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : 'Generation failed');
-    } finally {
-      setGenerating(false);
-    }
-  }
-
   function handleClearDraft() {
     if (confirm('Clear all draft data?')) {
       localStorage.removeItem(STORAGE_KEY);
@@ -118,31 +81,19 @@ export default function Dashboard() {
             <h1 className="font-serif text-gold-400 text-xl font-semibold">Broker Referral Term Sheet</h1>
             <p className="text-gray-500 text-xs mt-0.5">IPV Ultra — Binding Referral Agreement Generator</p>
           </div>
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={handleClearDraft}
-              className="text-xs text-gray-500 hover:text-gray-300 transition-colors"
-            >
-              Clear Draft
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={handleClearDraft}
+            className="text-xs text-gray-500 hover:text-gray-300 transition-colors"
+          >
+            Clear Draft
+          </button>
         </div>
 
-        {/* Alerts */}
-        {error && (
-          <div className="mx-8 mt-4 bg-red-900/20 border border-red-500/30 text-red-300 text-sm px-4 py-3 rounded-md flex items-center gap-2">
-            <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            {error}
-          </div>
-        )}
-
-        {/* Form */}
-        <form id="term-sheet-form" onSubmit={handleSubmit(onSubmit)} className="px-8 py-6">
-          <FormSection register={register} watch={watch} setValue={setValue} errors={errors} />
-        </form>
+        {/* Form — no submit, data is auto-saved to localStorage */}
+        <div className="px-8 py-6">
+          <FormSection register={register} watch={watch} setValue={setValue} errors={{}} />
+        </div>
       </main>
 
       <LivePreview watch={watch} />
