@@ -8,11 +8,21 @@ RUN npm install
 COPY frontend/ ./
 RUN npm run build
 
+# ── Runtime ───────────────────────────────────────────────────────────────────
 FROM nginx:alpine
 
+# envsubst is included in nginx:alpine via gettext
+RUN apk add --no-cache gettext
+
 COPY --from=builder /app/dist /usr/share/nginx/html
-COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
+# Store the template; entrypoint replaces ${BACKEND_URL} at startup
+COPY docker/nginx.conf /etc/nginx/templates/default.conf.template
+
+# Default: works with docker-compose where backend service is named "backend"
+ENV BACKEND_URL=http://backend:3001
 
 EXPOSE 80
 
+# nginx official image processes /etc/nginx/templates/*.template automatically
+# via envsubst → /etc/nginx/conf.d/  (requires nginx:alpine 1.19+)
 CMD ["nginx", "-g", "daemon off;"]

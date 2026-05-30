@@ -1,0 +1,30 @@
+services:
+  # ── Backend API ─────────────────────────────────────────────────────────────
+  - type: web
+    name: mou-writer-backend
+    runtime: docker
+    dockerfilePath: docker/Dockerfile.backend
+    dockerContext: .
+    plan: free
+    envVars:
+      - key: PORT
+        value: 3001
+      - key: NODE_ENV
+        value: production
+    disk:
+      name: templates
+      mountPath: /app/templates
+      sizeGB: 1
+
+  # ── Frontend ─────────────────────────────────────────────────────────────────
+  - type: web
+    name: mou-writer-frontend
+    runtime: docker
+    dockerfilePath: docker/Dockerfile.frontend
+    dockerContext: .
+    plan: free
+    envVars:
+      # Replace with your actual backend Render URL after first deploy
+      # e.g. https://mou-writer-backend.onrender.com
+      - key: BACKEND_URL
+        value: https://mou-writer-backend.onrender.com
