@@ -126,29 +126,6 @@ export default function Dashboard() {
             >
               Clear Draft
             </button>
-            <button
-              type="submit"
-              form="term-sheet-form"
-              disabled={generating}
-              className="btn-primary"
-            >
-              {generating ? (
-                <>
-                  <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                  </svg>
-                  Generating...
-                </>
-              ) : (
-                <>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                  Download PDF
-                </>
-              )}
-            </button>
           </div>
         </div>
 
@@ -159,23 +136,6 @@ export default function Dashboard() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             {error}
-          </div>
-        )}
-        {success && (
-          <div className="mx-8 mt-4 bg-gold-900/20 border border-gold-500/30 text-gold-300 text-sm px-4 py-3 rounded-md flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-              PDF generated successfully! Your download should have started.
-            </div>
-            <button
-              type="submit"
-              form="term-sheet-form"
-              className="text-xs border border-gold-500/50 text-gold-400 hover:bg-gold-500/10 px-3 py-1 rounded transition-colors"
-            >
-              Download Again
-            </button>
           </div>
         )}
 
