@@ -23,7 +23,7 @@ export default function Dashboard() {
     }
   })();
 
-  const { register, handleSubmit, watch, reset, formState: { errors } } = useForm<FormFields>({
+  const { register, handleSubmit, watch, reset, setValue, formState: { errors } } = useForm<FormFields>({
     defaultValues: savedValues,
   });
 
@@ -71,7 +71,7 @@ export default function Dashboard() {
     setSuccess(false);
 
     try {
-      const res = await fetch('/api/generate', {
+      const res = await fetch('/api/generate/pdf', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -86,7 +86,7 @@ export default function Dashboard() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `IPV_Ultra_Term_Sheet_${data.field2 || 'Broker'}_${new Date().toISOString().split('T')[0]}.docx`;
+      a.download = `IPV_Ultra_Term_Sheet_${data.field2 || 'Broker'}_${new Date().toISOString().split('T')[0]}.pdf`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -145,7 +145,7 @@ export default function Dashboard() {
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
-                  Generate Document
+                  Download PDF
                 </>
               )}
             </button>
@@ -167,7 +167,7 @@ export default function Dashboard() {
               <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
-              Document generated successfully! Your download should have started.
+              PDF generated successfully! Your download should have started.
             </div>
             <button
               type="submit"
@@ -181,7 +181,7 @@ export default function Dashboard() {
 
         {/* Form */}
         <form id="term-sheet-form" onSubmit={handleSubmit(onSubmit)} className="px-8 py-6">
-          <FormSection register={register} watch={watch} errors={errors} />
+          <FormSection register={register} watch={watch} setValue={setValue} errors={errors} />
         </form>
       </main>
 

@@ -1,34 +1,65 @@
-import { UseFormRegister, UseFormWatch, FieldErrors } from 'react-hook-form';
-import { FormFields, FIELD_LABELS, SECTIONS } from '../types/fields';
+import { UseFormRegister, UseFormWatch, UseFormSetValue, FieldErrors } from 'react-hook-form';
+import { FormFields, FIELD_LABELS, SECTIONS, TOGGLE_FIELDS } from '../types/fields';
 
 interface FormSectionProps {
   register: UseFormRegister<FormFields>;
   watch: UseFormWatch<FormFields>;
+  setValue: UseFormSetValue<FormFields>;
   errors: FieldErrors<FormFields>;
 }
 
 const DATE_FIELDS: (keyof FormFields)[] = ['field1', 'field44'];
 const EMAIL_FIELDS: (keyof FormFields)[] = ['field6', 'field9'];
 const TEL_FIELDS: (keyof FormFields)[] = ['field7', 'field8'];
-const NUMBER_FIELDS: (keyof FormFields)[] = [
-  'field10', 'field11', 'field14', 'field15', 'field16', 'field17', 'field18',
-  'field20', 'field23', 'field24', 'field25', 'field26', 'field27',
-  'field28', 'field29', 'field30', 'field31', 'field32',
-  'field33', 'field34', 'field35', 'field36', 'field37',
-  'field38', 'field39', 'field40', 'field41', 'field42',
-  'field45', 'field46', 'field47',
-];
 const TEXTAREA_FIELDS: (keyof FormFields)[] = ['field5'];
 
 function getInputType(field: keyof FormFields): string {
   if (DATE_FIELDS.includes(field)) return 'date';
   if (EMAIL_FIELDS.includes(field)) return 'email';
   if (TEL_FIELDS.includes(field)) return 'tel';
-  if (NUMBER_FIELDS.includes(field)) return 'text';
   return 'text';
 }
 
-export default function FormSection({ register, watch, errors }: FormSectionProps) {
+interface ToggleProps {
+  field: keyof FormFields;
+  value: string;
+  onChange: (val: string) => void;
+}
+
+function AllowedToggle({ field: _field, value, onChange }: ToggleProps) {
+  const isAllowed = value === 'Allowed';
+
+  return (
+    <div className="flex items-center gap-1 mt-1">
+      <button
+        type="button"
+        onClick={() => onChange('Allowed')}
+        className={`
+          flex-1 py-2 px-4 rounded-l-md text-sm font-semibold transition-all duration-200 border
+          ${isAllowed
+            ? 'bg-emerald-700 border-emerald-500 text-emerald-100 shadow-inner'
+            : 'bg-dark-700 border-dark-500 text-gray-500 hover:bg-dark-600 hover:text-gray-300'}
+        `}
+      >
+        ✓ Allowed
+      </button>
+      <button
+        type="button"
+        onClick={() => onChange('Not Allowed')}
+        className={`
+          flex-1 py-2 px-4 rounded-r-md text-sm font-semibold transition-all duration-200 border
+          ${!isAllowed
+            ? 'bg-red-900 border-red-700 text-red-200 shadow-inner'
+            : 'bg-dark-700 border-dark-500 text-gray-500 hover:bg-dark-600 hover:text-gray-300'}
+        `}
+      >
+        ✗ Not Allowed
+      </button>
+    </div>
+  );
+}
+
+export default function FormSection({ register, watch, setValue, errors: _errors }: FormSectionProps) {
   const values = watch();
 
   return (
@@ -40,7 +71,9 @@ export default function FormSection({ register, watch, errors }: FormSectionProp
             {section.fields.map((field) => {
               const label = FIELD_LABELS[field];
               const isTextarea = TEXTAREA_FIELDS.includes(field);
-              const hasValue = (values[field] || '').trim() !== '';
+              const isToggle = TOGGLE_FIELDS.includes(field);
+              const currentValue = values[field] || '';
+              const hasValue = currentValue.trim() !== '';
 
               return (
                 <div key={field} className={isTextarea ? 'md:col-span-2' : ''}>
@@ -49,7 +82,18 @@ export default function FormSection({ register, watch, errors }: FormSectionProp
                     {label}
                     {hasValue && <span className="ml-1 text-gold-500">✓</span>}
                   </label>
-                  {isTextarea ? (
+
+                  {isToggle ? (
+                    <>
+                      {/* Hidden input keeps the value in react-hook-form */}
+                      <input type="hidden" {...register(field)} />
+                      <AllowedToggle
+                        field={field}
+                        value={currentValue}
+                        onChange={(val) => setValue(field, val, { shouldDirty: true })}
+                      />
+                    </>
+                  ) : isTextarea ? (
                     <textarea
                       id={field}
                       rows={3}

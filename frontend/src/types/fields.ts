@@ -47,6 +47,8 @@ export interface FormFields {
   field46: string;  // Quarterly AUM Threshold
   field47: string;  // Validity Period Years
   field48: string;  // Consultant Signatory Name
+  field49: string;  // Sub-Referral Rights (toggle: Allowed / Not Allowed)
+  field50: string;  // Assignment of Agreement (toggle: Allowed / Not Allowed)
 }
 
 export const FIELD_LABELS: Record<keyof FormFields, string> = {
@@ -98,7 +100,12 @@ export const FIELD_LABELS: Record<keyof FormFields, string> = {
   field46: 'Quarterly AUM Threshold (₹)',
   field47: 'Validity Period (Years)',
   field48: 'Consultant Signatory Name',
+  field49: 'Sub-Referral Rights',
+  field50: 'Assignment of Agreement',
 };
+
+// Fields that render as Allowed / Not Allowed toggle
+export const TOGGLE_FIELDS: (keyof FormFields)[] = ['field49', 'field50'];
 
 export const SECTIONS = [
   {
@@ -143,8 +150,8 @@ export const SECTIONS = [
   },
   {
     id: 'exclusivity',
-    label: 'I. Exclusivity',
-    fields: ['field43', 'field44', 'field45', 'field46'] as (keyof FormFields)[],
+    label: 'I. Exclusivity & Permissions',
+    fields: ['field43', 'field44', 'field45', 'field46', 'field49', 'field50'] as (keyof FormFields)[],
   },
   {
     id: 'validity',
@@ -153,12 +160,59 @@ export const SECTIONS = [
   },
 ];
 
+// Meaningful defaults so the PDF is never blank when user hasn't changed a field
+const today = new Date().toISOString().split('T')[0];
+const oneYearLater = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+
 export const DEFAULT_VALUES: FormFields = {
-  field1: '', field2: '', field3: '', field4: '', field5: '', field6: '', field7: '',
-  field8: '', field9: '', field10: '', field11: '', field12: '', field13: '', field14: '',
-  field15: '', field16: '', field17: '', field18: '', field19: '', field20: '', field21: '',
-  field22: '', field23: '', field24: '', field25: '', field26: '', field27: '', field28: '',
-  field29: '', field30: '', field31: '', field32: '', field33: '', field34: '', field35: '',
-  field36: '', field37: '', field38: '', field39: '', field40: '', field41: '', field42: '',
-  field43: '', field44: '', field45: '', field46: '', field47: '', field48: '',
+  field1: today,
+  field2: 'Consultant Entity Name',
+  field3: 'LLP IN / CIN Number',
+  field4: 'Contact Person Name',
+  field5: 'Address Line 1, City, State – PIN Code',
+  field6: 'contact@example.com',
+  field7: '+91 XXXXXXXXXX',
+  field8: '+91 XXXXXXXXXX',
+  field9: 'office@ipvultra.com',
+  field10: '2%',
+  field11: '5',
+  field12: '20%',
+  field13: '8%',
+  field14: '1,00,00,000',
+  field15: '25,00,000',
+  field16: '25,00,000',
+  field17: '25,00,000',
+  field18: '25,00,000',
+  field19: '1.5%',
+  field20: '5',
+  field21: '15%',
+  field22: '8%',
+  field23: '50,00,000',
+  field24: '12,50,000',
+  field25: '12,50,000',
+  field26: '12,50,000',
+  field27: '12,50,000',
+  field28: '1',
+  field29: '2',
+  field30: '5',
+  field31: '10',
+  field32: '20',
+  field33: '1%',
+  field34: '1.25%',
+  field35: '1.5%',
+  field36: '1.75%',
+  field37: '2%',
+  field38: '1.5%',
+  field39: '1.75%',
+  field40: '2%',
+  field41: '2.25%',
+  field42: '2.5%',
+  field43: 'Pan India',
+  field44: oneYearLater,
+  field45: '50,00,000',
+  field46: '1,50,00,000',
+  field47: '3',
+  field48: 'Authorised Signatory Name',
+  field49: 'Not Allowed',
+  field50: 'Not Allowed',
 };
