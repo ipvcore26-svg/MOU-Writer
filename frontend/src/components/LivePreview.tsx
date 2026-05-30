@@ -18,12 +18,12 @@ export default function LivePreview({ watch }: LivePreviewProps) {
   const values = watch();
 
   const sections = [
-    { title: 'Execution & Consultant', fields: ['field1','field2','field3','field4','field6'] as (keyof FormFields)[] },
-    { title: 'IPV Ultra A', fields: ['field10','field11','field12','field13','field14'] as (keyof FormFields)[] },
-    { title: 'IPV Ultra B', fields: ['field19','field20','field21','field22','field23'] as (keyof FormFields)[] },
-    { title: 'Slabs & Fee', fields: ['field28','field29','field33','field38'] as (keyof FormFields)[] },
-    { title: 'Exclusivity & Permissions', fields: ['field43','field44','field49','field50','field51'] as (keyof FormFields)[] },
-    { title: 'Validity & Signatory', fields: ['field47','field48'] as (keyof FormFields)[] },
+    { title: 'Execution & Consultant', fields: ['field10','field11','field1','field3'] as (keyof FormFields)[] },
+    { title: 'IPV Ultra A', fields: ['field7','field14','field15','field16','field17'] as (keyof FormFields)[] },
+    { title: 'IPV Ultra B', fields: ['field22','field23','field24','field25','field26'] as (keyof FormFields)[] },
+    { title: 'Slabs & Fee', fields: ['field31','field32','field36','field41'] as (keyof FormFields)[] },
+    { title: 'Exclusivity & Permissions', fields: ['field46','field47','field49','field50','field51'] as (keyof FormFields)[] },
+    { title: 'Validity', fields: ['field48'] as (keyof FormFields)[] },
   ];
 
   return (
@@ -52,10 +52,10 @@ export default function LivePreview({ watch }: LivePreviewProps) {
               </svg>
             </div>
             <p className="text-xs font-medium text-surface-700 font-serif">
-              {values.field2 || 'Broker Referral Term Sheet'}
+              {values.field11 || 'Broker Referral Term Sheet'}
             </p>
             <p className="text-xs text-surface-400 mt-0.5">
-              {values.field1 ? `Dated: ${values.field1}` : 'Date not set'}
+              {values.field10 ? `Dated: ${values.field10}` : 'Date not set'}
             </p>
           </div>
         </div>

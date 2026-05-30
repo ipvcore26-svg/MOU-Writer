@@ -8,7 +8,7 @@ import LivePreview from '../components/LivePreview';
 import { FormFields, DEFAULT_VALUES, DOC_DEFAULTS } from '../types/fields';
 
 const STORAGE_KEY = 'ipv_term_sheet_draft';
-const STORAGE_VERSION = 'v2'; // bump to clear old cached defaults
+const STORAGE_VERSION = 'v3'; // bump to clear old cached defaults
 
 export default function Dashboard() {
   const [generating, setGenerating] = useState(false);
@@ -89,12 +89,24 @@ export default function Dashboard() {
         delimiters: { start: '{{', end: '}}' },
       });
       doc.render(fields);
-      const out = doc.getZip().generate({ type: 'blob', mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+
+      // Strip yellow highlight from all rendered XML files
+      const renderedZip = doc.getZip();
+      ['word/document.xml', 'word/header1.xml', 'word/footer1.xml'].forEach(f => {
+        if (renderedZip.files[f]) {
+          let xml = renderedZip.files[f].asText();
+          xml = xml.replace(/<w:highlight w:val="[^"]*"\/>/g, '');
+          xml = xml.replace(/<w:shd[^/]*w:fill="FFFF00"[^/]*\/>/g, '');
+          renderedZip.file(f, xml);
+        }
+      });
+
+      const out = renderedZip.generate({ type: 'blob', mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
 
       const url = URL.createObjectURL(out);
       const a   = document.createElement('a');
       a.href    = url;
-      a.download = `IPV_Ultra_Term_Sheet_${data.field2 || 'Broker'}_${new Date().toISOString().split('T')[0]}.docx`;
+      a.download = `IPV_Ultra_Term_Sheet_${data.field11 || 'Broker'}_${new Date().toISOString().split('T')[0]}.docx`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
