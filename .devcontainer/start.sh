@@ -4,9 +4,18 @@ WORKSPACE="/workspaces/MOU-Writer"
 LOG_DIR="$WORKSPACE/.devcontainer/logs"
 mkdir -p "$LOG_DIR"
 
+# Always pull latest code so stale builds never run
+echo "==> Pulling latest code..."
+git -C "$WORKSPACE" pull origin claude/gallant-bohr-DXQe7 2>&1 || true
+
+echo "==> Installing any new dependencies..."
+cd "$WORKSPACE/backend"  && npm install --silent
+cd "$WORKSPACE/frontend" && npm install --silent
+
 # Kill any existing processes on our ports
 pkill -f "node server.js" 2>/dev/null || true
 pkill -f "vite"           2>/dev/null || true
+sleep 1
 
 echo "==> Starting backend on port 3001..."
 cd "$WORKSPACE/backend"
