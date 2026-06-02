@@ -8,10 +8,10 @@ interface FormSectionProps {
   errors: FieldErrors<FormFields>;
 }
 
-const DATE_FIELDS:     (keyof FormFields)[] = ['field10', 'field44'];
+const DATE_FIELDS:     (keyof FormFields)[] = ['field10'];
 const EMAIL_FIELDS:    (keyof FormFields)[] = ['field3', 'field13'];
 const TEL_FIELDS:      (keyof FormFields)[] = ['field7', 'field8'];
-const NUMBER_FIELDS:   (keyof FormFields)[] = ['field9'];
+const NUMBER_FIELDS:   (keyof FormFields)[] = ['field9', 'field44'];
 const TEXTAREA_FIELDS: (keyof FormFields)[] = ['field5'];
 
 function getInputType(field: keyof FormFields): string {
