@@ -8,7 +8,7 @@ import LivePreview from '../components/LivePreview';
 import { FormFields, DEFAULT_VALUES, DOC_DEFAULTS } from '../types/fields';
 
 const STORAGE_KEY = 'ipv_term_sheet_draft';
-const STORAGE_VERSION = 'v3'; // bump to clear old cached defaults
+const STORAGE_VERSION = 'v4'; // bump to clear old cached defaults
 
 export default function Dashboard() {
   const [generating, setGenerating] = useState(false);
@@ -135,7 +135,11 @@ export default function Dashboard() {
         <div className="sticky top-0 z-10 bg-white border-b border-surface-200 px-8 py-4 flex items-center justify-between shadow-sm">
           <div>
             <h1 className="font-serif text-brand-700 text-xl font-semibold">Broker Referral Term Sheet</h1>
-            <p className="text-surface-500 text-xs mt-0.5">IPV Ultra — Binding Referral Agreement Generator</p>
+            <p className="text-surface-500 text-xs mt-0.5">
+              {values.field52
+                ? <>Investment Manager: <span className="text-brand-600 font-medium">{values.field52}</span></>
+                : 'IPV Ultra — Binding Referral Agreement Generator'}
+            </p>
           </div>
           <div className="flex items-center gap-3">
             <button

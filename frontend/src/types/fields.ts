@@ -12,7 +12,8 @@ export interface FormFields {
   field6:  string;  // Consultant Signatory Name
 
   // C. Investment Manager
-  field5:  string;  // IPV Phone (Chaitanya, after +91)
+  field52: string;  // Investment Manager Name
+  field5:  string;  // Investment Manager Phone (after +91)
   field13: string;  // IPV Office Email
 
   // D. IPV Ultra A
@@ -80,6 +81,7 @@ export const FIELD_LABELS: Record<keyof FormFields, string> = {
   field3:  'Contact Person Email',
   field4:  'Contact Person Phone',
   field6:  'Consultant Signatory Name',
+  field52: 'Investment Manager Name',
   field5:  'Investment Manager Phone (after +91)',
   field13: 'IPV Office Email',
   field7:  'Annual Management Fee % (number only)',
@@ -141,7 +143,7 @@ export const SECTIONS = [
   {
     id: 'investment-manager',
     label: 'C. Investment Manager',
-    fields: ['field5', 'field13'] as (keyof FormFields)[],
+    fields: ['field52', 'field5', 'field13'] as (keyof FormFields)[],
   },
   {
     id: 'ultra-a',
@@ -185,7 +187,7 @@ const oneYearLater = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOStrin
 
 export const DEFAULT_VALUES: FormFields = {
   field10: '', field11: '', field12: '', field1: '', field2: '',
-  field3: '', field4: '', field6: '', field5: '', field13: '',
+  field3: '', field4: '', field6: '', field52: '', field5: '', field13: '',
   field7:  '2',
   field14: '5',
   field15: '20%',
@@ -241,6 +243,7 @@ export const DOC_DEFAULTS: FormFields = {
   field3:  'contact@example.com',
   field4:  '+91 XXXXXXXXXX',
   field6:  'Authorised Signatory Name',
+  field52: 'Investment Manager Name',
   field5:  'XXXXXXXXXX',
   field13: 'office@ipvultra.com',
   field7:  '2',
