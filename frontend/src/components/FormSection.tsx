@@ -9,7 +9,7 @@ interface FormSectionProps {
 }
 
 const DATE_FIELDS:     (keyof FormFields)[] = ['field10', 'field44'];
-const EMAIL_FIELDS:    (keyof FormFields)[] = ['field6', 'field13'];
+const EMAIL_FIELDS:    (keyof FormFields)[] = ['field3', 'field13'];
 const TEL_FIELDS:      (keyof FormFields)[] = ['field7', 'field8'];
 const NUMBER_FIELDS:   (keyof FormFields)[] = ['field9'];
 const TEXTAREA_FIELDS: (keyof FormFields)[] = ['field5'];
