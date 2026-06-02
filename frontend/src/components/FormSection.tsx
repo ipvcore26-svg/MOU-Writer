@@ -8,6 +8,18 @@ interface FormSectionProps {
   errors: FieldErrors<FormFields>;
 }
 
+// Sequential display numbers based on page order (not field IDs)
+const FIELD_DISPLAY_NUMBER: Record<keyof FormFields, number> = (() => {
+  const map = {} as Record<keyof FormFields, number>;
+  let n = 1;
+  for (const section of SECTIONS) {
+    for (const field of section.fields) {
+      map[field] = n++;
+    }
+  }
+  return map;
+})();
+
 const DATE_FIELDS:     (keyof FormFields)[] = ['field10'];
 const EMAIL_FIELDS:    (keyof FormFields)[] = ['field3', 'field13'];
 const TEL_FIELDS:      (keyof FormFields)[] = ['field7', 'field8'];
@@ -85,7 +97,7 @@ export default function FormSection({ register, watch, setValue, errors: _errors
               return (
                 <div key={field} className={isTextarea ? 'md:col-span-2' : ''}>
                   <label className="gold-label" htmlFor={field}>
-                    <span className="text-surface-400 mr-1">{field.replace('field', '#')}</span>
+                    <span className="text-surface-400 mr-1">#{FIELD_DISPLAY_NUMBER[field]}</span>
                     {label}
                     {hasValue && <span className="ml-1 text-brand-500">✓</span>}
                   </label>
